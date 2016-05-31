@@ -11,6 +11,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+import kata_london_style.domain.model.State;
 import kata_london_style.infrastructure.entry.UserRegistrationCommand;
 import kata_london_style.infrastructure.repository.UserEntity;
 import kata_london_style.infrastructure.repository.UserEntityAdapter;
@@ -45,9 +46,9 @@ public class UserRegistrationCommandTest
       }
     });
 
-    userRegistrationCommand.execute(NEW_USER);
+    State result = userRegistrationCommand.execute(NEW_USER);
 
-    context.assertIsSatisfied();
+    verify(result, State.OK);
   }
 
   @Test()
@@ -61,10 +62,14 @@ public class UserRegistrationCommandTest
       }
     });
 
-    String result = userRegistrationCommand.execute(OLD_USER);
+    State result = userRegistrationCommand.execute(OLD_USER);
 
-    assertThat("Should be equals", result, equalTo("KO"));
+    verify(result, State.KO);
+  }
 
+  private void verify(State result, State expected)
+  {
+    assertThat(result, equalTo(expected));
     context.assertIsSatisfied();
   }
 }

@@ -2,6 +2,7 @@ package kata_london_style.infrastructure.entry;
 
 import javax.persistence.EntityExistsException;
 
+import kata_london_style.domain.model.State;
 import kata_london_style.domain.ports.primary.ContentProcessCommand;
 import kata_london_style.infrastructure.repository.UserEntity;
 import kata_london_style.infrastructure.repository.UserEntityAdapter;
@@ -16,7 +17,7 @@ public class UserRegistrationCommand implements ContentProcessCommand
   }
 
   @Override
-  public String execute(String name)
+  public State execute(String name)
   {
     UserEntity userEntity = new UserEntity(name);
 
@@ -26,8 +27,8 @@ public class UserRegistrationCommand implements ContentProcessCommand
     }
     catch (EntityExistsException e)
     {
-      return "KO";
+      return State.KO;
     }
-    return "OK";
+    return State.OK;
   }
 }

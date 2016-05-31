@@ -6,6 +6,7 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+import kata_london_style.domain.model.State;
 import kata_london_style.infrastructure.entry.CommandExecutor;
 import kata_london_style.infrastructure.entry.CommandInterpreter;
 import kata_london_style.infrastructure.entry.Main;
@@ -28,6 +29,8 @@ public class MainTest
     context.setImposteriser(ClassImposteriser.INSTANCE);
     commandExecutor = context.mock(CommandExecutor.class);
     commandInterpreter = context.mock(CommandInterpreter.class);
+    main.setCommandExecutor(commandExecutor);
+    main.setCommandInterpreter(commandInterpreter);
   }
 
   @Test
@@ -39,11 +42,9 @@ public class MainTest
         oneOf(commandInterpreter).valid(USER_REGISTRATION);
         will(returnValue(true));
         oneOf(commandExecutor).execute(USER_REGISTRATION, USER);
-        will(returnValue("OK"));
+        will(returnValue(State.OK));
       }
     });
-    main.setCommandExecutor(commandExecutor);
-    main.setCommandInterpreter(commandInterpreter);
 
     String[] args = { USER_REGISTRATION, USER};
 
@@ -60,11 +61,9 @@ public class MainTest
       {
         oneOf(commandInterpreter).valid(INVALID_COMMAND);
         will(returnValue(false));
-        never(commandExecutor).execute(with(any(String.class)), with(any(String.class)));
+        never(commandExecutor).execute(INVALID_COMMAND, USER);
       }
     });
-    main.setCommandExecutor(commandExecutor);
-    main.setCommandInterpreter(commandInterpreter);
 
     String[] args = { INVALID_COMMAND, USER};
 
