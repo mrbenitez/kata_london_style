@@ -1,5 +1,7 @@
 package kata_london_style;
 
+import javax.persistence.EntityExistsException;
+
 import org.jmock.Expectations;
 import org.jmock.Mockery;
 import org.jmock.lib.legacy.ClassImposteriser;
@@ -14,6 +16,8 @@ public class UserRegistrationCommandTest
 {
   private static final String NEW_USER = "mramos";
   private UserEntity newUserEntity = new UserEntity(NEW_USER);
+  private static final String OLD_USER = "asdfadf";
+  private UserEntity oldUserEntity = new UserEntity(OLD_USER);
 
   private Mockery context;
   private UserRegistrationCommand userRegistrationCommand;
@@ -29,7 +33,7 @@ public class UserRegistrationCommandTest
   }
 
   @Test
-  public void addNewUser()
+  public void addNewUser() throws UserExistsException
   {
     context.checking(new Expectations()
     {
@@ -39,6 +43,22 @@ public class UserRegistrationCommandTest
     });
 
     userRegistrationCommand.execute(NEW_USER);
+
+    context.assertIsSatisfied();
+  }
+
+  @Test(expected = UserExistsException.class)
+  public void addOldUserThenException() throws UserExistsException
+  {
+    context.checking(new Expectations()
+    {
+      {
+        oneOf(userEntityRepository).addUser(newUserEntity);
+        will(throwException(new EntityExistsException()));
+      }
+    });
+
+    userRegistrationCommand.execute(OLD_USER);
 
     context.assertIsSatisfied();
   }
