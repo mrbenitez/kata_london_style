@@ -1,5 +1,6 @@
 package kata_london_style;
 
+import static java.util.Collections.singletonList;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -46,7 +47,7 @@ public class UserRegistrationCommandTest
       }
     });
 
-    State result = userRegistrationCommand.execute(NEW_USER);
+    State result = userRegistrationCommand.execute(singletonList(NEW_USER));
 
     verify(result, State.OK);
   }
@@ -62,7 +63,7 @@ public class UserRegistrationCommandTest
       }
     });
 
-    State result = userRegistrationCommand.execute(OLD_USER);
+    State result = userRegistrationCommand.execute(singletonList(OLD_USER));
 
     verify(result, State.KO);
   }

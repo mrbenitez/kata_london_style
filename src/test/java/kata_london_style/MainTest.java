@@ -8,7 +8,6 @@ import org.junit.Test;
 
 import kata_london_style.domain.model.State;
 import kata_london_style.infrastructure.entry.CommandExecutor;
-import kata_london_style.infrastructure.entry.CommandInterpreter;
 import kata_london_style.infrastructure.entry.Main;
 
 public class MainTest
@@ -18,10 +17,10 @@ public class MainTest
   private static final String USER_TO_FOLLOW = "kkk";
   private static final String USER_REGISTRATION = "userRegistration";
   private static final String FOLLOW_USER = "followUser";
-  private Main main = new Main();
+  private Main main;
 
   private Mockery context;
-  private CommandInterpreter commandInterpreter;
+
   private CommandExecutor commandExecutor;
 
   @Before
@@ -30,9 +29,7 @@ public class MainTest
     context = new Mockery();
     context.setImposteriser(ClassImposteriser.INSTANCE);
     commandExecutor = context.mock(CommandExecutor.class);
-    commandInterpreter = context.mock(CommandInterpreter.class);
-    main.setCommandExecutor(commandExecutor);
-    main.setCommandInterpreter(commandInterpreter);
+    main = new Main(commandExecutor);
   }
 
   @Test
@@ -41,8 +38,6 @@ public class MainTest
     context.checking(new Expectations()
     {
       {
-        oneOf(commandInterpreter).valid(USER_REGISTRATION);
-        will(returnValue(true));
         oneOf(commandExecutor).execute(USER_REGISTRATION, USER);
         will(returnValue(State.OK));
       }
@@ -61,9 +56,8 @@ public class MainTest
     context.checking(new Expectations()
     {
       {
-        oneOf(commandInterpreter).valid(INVALID_COMMAND);
-        will(returnValue(false));
-        never(commandExecutor).execute(INVALID_COMMAND, USER);
+        oneOf(commandExecutor).execute(INVALID_COMMAND, USER);
+        will(returnValue(State.KO));
       }
     });
 
@@ -80,8 +74,6 @@ public class MainTest
     context.checking(new Expectations()
     {
       {
-        oneOf(commandInterpreter).valid(FOLLOW_USER);
-        will(returnValue(true));
         oneOf(commandExecutor).execute(FOLLOW_USER, USER, USER_TO_FOLLOW);
         will(returnValue(State.OK));
       }

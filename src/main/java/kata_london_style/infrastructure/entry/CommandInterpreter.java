@@ -3,20 +3,25 @@ package kata_london_style.infrastructure.entry;
 import java.util.HashMap;
 import java.util.Map;
 
-import kata_london_style.domain.model.State;
+import kata_london_style.domain.ports.primary.ContentProcessCommand;
 
 public class CommandInterpreter
 {
-  Map<String, State> map = new HashMap<>();
+  private Map<String, ContentProcessCommand> map = new HashMap<>();
 
-  public CommandInterpreter()
+  public CommandInterpreter(ContentProcessCommand userRegistration, ContentProcessCommand followUser)
   {
-    map.put("userRegistration", State.OK);
-    map.put("followUser", State.OK);
+    map.put("userRegistration", userRegistration);
+    map.put("followUser", followUser);
   }
 
-  public boolean valid(String command)
+  public boolean valid(String name)
   {
-    return map.containsKey(command);
+    return map.containsKey(name);
+  }
+
+  public ContentProcessCommand obtainCommand(String name)
+  {
+    return map.get(name);
   }
 }

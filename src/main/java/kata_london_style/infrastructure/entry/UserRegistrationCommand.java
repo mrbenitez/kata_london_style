@@ -1,5 +1,7 @@
 package kata_london_style.infrastructure.entry;
 
+import java.util.List;
+
 import javax.persistence.EntityExistsException;
 
 import kata_london_style.domain.model.State;
@@ -17,9 +19,9 @@ public class UserRegistrationCommand implements ContentProcessCommand
   }
 
   @Override
-  public State execute(String... args)
+  public State execute(List<String> args)
   {
-    UserEntity userEntity = new UserEntity(args[1]);
+    UserEntity userEntity = new UserEntity(args.get(0));
 
     try
     {

@@ -3,23 +3,14 @@ package kata_london_style.infrastructure.entry;
 public final class Main
 {
   private CommandExecutor commandExecutor;
-  private CommandInterpreter commandInterpreter;
 
-  public void execute(String[] args)
-  {
-    if (commandInterpreter.valid(args[0]))
-    {
-      commandExecutor.execute(args);
-    }
-  }
-
-  public void setCommandExecutor(CommandExecutor commandExecutor)
+  public Main(CommandExecutor commandExecutor)
   {
     this.commandExecutor = commandExecutor;
   }
 
-  public void setCommandInterpreter(CommandInterpreter commandInterpreter)
+  public void execute(String[] args)
   {
-    this.commandInterpreter = commandInterpreter;
+    commandExecutor.execute(args);
   }
 }
