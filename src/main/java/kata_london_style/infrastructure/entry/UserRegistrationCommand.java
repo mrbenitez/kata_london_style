@@ -1,5 +1,7 @@
 package kata_london_style.infrastructure.entry;
 
+import javax.persistence.EntityExistsException;
+
 import kata_london_style.domain.ports.primary.ContentProcessCommand;
 import kata_london_style.infrastructure.repository.UserEntity;
 import kata_london_style.infrastructure.repository.UserEntityAdapter;
@@ -17,7 +19,15 @@ public class UserRegistrationCommand implements ContentProcessCommand
   public String execute(String name)
   {
     UserEntity userEntity = new UserEntity(name);
-    userEntityRepository.addUser(userEntity);
+
+    try
+    {
+      userEntityRepository.addUser(userEntity);
+    }
+    catch (EntityExistsException e)
+    {
+      return "KO";
+    }
     return "OK";
   }
 }

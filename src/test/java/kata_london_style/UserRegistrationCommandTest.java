@@ -1,5 +1,8 @@
 package kata_london_style;
 
+import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertThat;
+
 import javax.persistence.EntityExistsException;
 
 import org.jmock.Expectations;
@@ -33,7 +36,7 @@ public class UserRegistrationCommandTest
   }
 
   @Test
-  public void addNewUser() throws UserExistsException
+  public void addNewUser()
   {
     context.checking(new Expectations()
     {
@@ -47,18 +50,20 @@ public class UserRegistrationCommandTest
     context.assertIsSatisfied();
   }
 
-  @Test(expected = UserExistsException.class)
-  public void addOldUserThenException() throws UserExistsException
+  @Test()
+  public void addOldUserThenException()
   {
     context.checking(new Expectations()
     {
       {
-        oneOf(userEntityRepository).addUser(newUserEntity);
+        oneOf(userEntityRepository).addUser(oldUserEntity);
         will(throwException(new EntityExistsException()));
       }
     });
 
-    userRegistrationCommand.execute(OLD_USER);
+    String result = userRegistrationCommand.execute(OLD_USER);
+
+    assertThat("Should be equals", result, equalTo("KO"));
 
     context.assertIsSatisfied();
   }
