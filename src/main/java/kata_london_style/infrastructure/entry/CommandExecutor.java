@@ -12,8 +12,8 @@ public class CommandExecutor
     this.userRegistration = userRegistration;
   }
 
-  public State execute(String command, String... arg)
+  public State execute(String... args)
   {
-    return userRegistration.execute(arg);
+    return userRegistration.execute(args);
   }
 }

@@ -9,7 +9,7 @@ public final class Main
   {
     if (commandInterpreter.valid(args[0]))
     {
-      commandExecutor.execute(args[0], args[1]);
+      commandExecutor.execute(args);
     }
   }
 

@@ -4,5 +4,5 @@ import kata_london_style.domain.model.State;
 
 public interface ContentProcessCommand
 {
-  public State execute(String name);
+  public State execute(String... args);
 }

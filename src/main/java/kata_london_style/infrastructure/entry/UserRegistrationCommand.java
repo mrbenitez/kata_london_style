@@ -17,9 +17,9 @@ public class UserRegistrationCommand implements ContentProcessCommand
   }
 
   @Override
-  public State execute(String name)
+  public State execute(String... args)
   {
-    UserEntity userEntity = new UserEntity(name);
+    UserEntity userEntity = new UserEntity(args[1]);
 
     try
     {
