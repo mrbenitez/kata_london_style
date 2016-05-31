@@ -15,7 +15,9 @@ public class MainTest
 {
   private static final String INVALID_COMMAND = "393kd9";
   private static final String USER = "mramos";
+  private static final String USER_TO_FOLLOW = "kkk";
   private static final String USER_REGISTRATION = "userRegistration";
+  private static final String FOLLOW_USER = "followUser";
   private Main main = new Main();
 
   private Mockery context;
@@ -66,6 +68,26 @@ public class MainTest
     });
 
     String[] args = { INVALID_COMMAND, USER};
+
+    main.execute(args);
+
+    context.assertIsSatisfied();
+  }
+
+  @Test
+  public void mainWithCommandFollowUser()
+  {
+    context.checking(new Expectations()
+    {
+      {
+        oneOf(commandInterpreter).valid(FOLLOW_USER);
+        will(returnValue(true));
+        oneOf(commandExecutor).execute(FOLLOW_USER, USER, USER_TO_FOLLOW);
+        will(returnValue(State.OK));
+      }
+    });
+
+    String[] args = { FOLLOW_USER, USER, USER_TO_FOLLOW};
 
     main.execute(args);
 
