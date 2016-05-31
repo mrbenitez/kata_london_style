@@ -17,10 +17,13 @@ import kata_london_style.infrastructure.entry.UserRegistrationCommand;
 public class CommandExecutorTest
 {
   private static final String USER = "mramos";
-  private static final String NEW_USER_COMMAND = "userRegistration";
+  private static final String USER_TO_FOLLOW = "kkk";
+  private static final String USER_REGISTRATION_COMMAND = "userRegistration";
+  private static final String FOLLOW_USER_COMMAND = "followUser";
   private CommandExecutor commandExecutor;
   private Mockery context;
   private ContentProcessCommand userRegistration;
+  private ContentProcessCommand followUser;
 
   @Before
   public void setUp()
@@ -28,11 +31,12 @@ public class CommandExecutorTest
     context = new Mockery();
     context.setImposteriser(ClassImposteriser.INSTANCE);
     userRegistration = context.mock(UserRegistrationCommand.class);
-    commandExecutor = new CommandExecutor(userRegistration);
+    followUser = context.mock(FollowUserCommand.class);
+    commandExecutor = new CommandExecutor(userRegistration, followUser);
   }
 
   @Test
-  public void executeWhenUserIsNew()
+  public void executeUserRegistrationWhenUserIsNew()
   {
     context.checking(new Expectations()
     {
@@ -42,13 +46,13 @@ public class CommandExecutorTest
       }
     });
 
-    State result = commandExecutor.execute(NEW_USER_COMMAND, USER);
+    State result = commandExecutor.execute(USER_REGISTRATION_COMMAND, USER);
 
     verify(result, State.OK);
   }
 
   @Test
-  public void executeWhenExistUser()
+  public void executeUserRegistrationWhenExistUser()
   {
     context.checking(new Expectations()
     {
@@ -58,9 +62,25 @@ public class CommandExecutorTest
       }
     });
 
-    State result = commandExecutor.execute(NEW_USER_COMMAND, USER);
+    State result = commandExecutor.execute(USER_REGISTRATION_COMMAND, USER);
 
     verify(result, State.KO);
+  }
+
+  @Test
+  public void executeFollowUser()
+  {
+    context.checking(new Expectations()
+    {
+      {
+        oneOf(followUser).execute(USER, USER_TO_FOLLOW);
+        will(returnValue(State.OK));
+      }
+    });
+
+    State result = commandExecutor.execute(FOLLOW_USER_COMMAND, USER, USER_TO_FOLLOW);
+
+    verify(result, State.OK);
   }
 
   private void verify(State result, State expected)
