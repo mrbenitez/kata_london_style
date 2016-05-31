@@ -12,7 +12,7 @@ public class CommandExecutorTest
   private static final String NEW_USER_COMMAND = "userRegistration";
   private CommandExecutor commandExecutor;
   private Mockery context;
-  private UserRegistration userRegistration;
+  private ContentProcessCommand userRegistration;
 
   @Before
   public void setUp()
@@ -36,5 +36,4 @@ public class CommandExecutorTest
 
     commandExecutor.execute(NEW_USER_COMMAND, USER);
   }
-
 }
