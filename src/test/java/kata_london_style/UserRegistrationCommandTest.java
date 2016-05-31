@@ -7,22 +7,25 @@ import org.junit.Before;
 import org.junit.Test;
 
 import kata_london_style.infrastructure.entry.UserRegistrationCommand;
+import kata_london_style.infrastructure.repository.UserEntity;
+import kata_london_style.infrastructure.repository.UserEntityAdapter;
 
 public class UserRegistrationCommandTest
 {
+  private static final String NEW_USER = "mramos";
+  private UserEntity newUserEntity = new UserEntity(NEW_USER);
 
-  protected static final String NEW_USER = "mramos";
   private Mockery context;
   private UserRegistrationCommand userRegistrationCommand;
-  private UserEntityRepository userEntityRepository;
+  private UserEntityAdapter userEntityRepository;
 
   @Before
   public void setUp()
   {
     context = new Mockery();
     context.setImposteriser(ClassImposteriser.INSTANCE);
-    userEntityRepository = context.mock(UserEntityRepository.class);
-
+    userEntityRepository = context.mock(UserEntityAdapter.class);
+    userRegistrationCommand = new UserRegistrationCommand(userEntityRepository);
   }
 
   @Test
@@ -31,12 +34,11 @@ public class UserRegistrationCommandTest
     context.checking(new Expectations()
     {
       {
-        oneOf(userEntityRepository).save(NEW_USER);
-        will(returnValue(true));
+        oneOf(userEntityRepository).addUser(newUserEntity);
       }
     });
 
-    userRegistrationCommand.save(NEW_USER);
+    userRegistrationCommand.execute(NEW_USER);
 
     context.assertIsSatisfied();
   }

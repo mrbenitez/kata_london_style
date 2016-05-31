@@ -6,9 +6,9 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+import kata_london_style.domain.ports.primary.ContentProcessCommand;
 import kata_london_style.infrastructure.entry.CommandExecutor;
 import kata_london_style.infrastructure.entry.UserRegistrationCommand;
-import kata_london_style.model.ports.primary.ContentProcessCommand;
 
 public class CommandExecutorTest
 {
@@ -27,7 +27,7 @@ public class CommandExecutorTest
   }
 
   @Test
-  public void executeNewUserRegistration()
+  public void executeWhenUserIsNew()
   {
     context.checking(new Expectations()
     {
@@ -39,5 +39,24 @@ public class CommandExecutorTest
     commandExecutor = new CommandExecutor(userRegistration);
 
     commandExecutor.execute(NEW_USER_COMMAND, USER);
+
+    context.assertIsSatisfied();
+  }
+
+  @Test
+  public void executeWhenExistUser()
+  {
+    context.checking(new Expectations()
+    {
+      {
+        oneOf(userRegistration).execute(USER);
+        will(returnValue("KO"));
+      }
+    });
+    commandExecutor = new CommandExecutor(userRegistration);
+
+    commandExecutor.execute(NEW_USER_COMMAND, USER);
+
+    context.assertIsSatisfied();
   }
 }

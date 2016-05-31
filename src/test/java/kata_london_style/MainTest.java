@@ -28,7 +28,6 @@ public class MainTest
     context.setImposteriser(ClassImposteriser.INSTANCE);
     commandExecutor = context.mock(CommandExecutor.class);
     commandInterpreter = context.mock(CommandInterpreter.class);
-
   }
 
   @Test

@@ -1,12 +1,23 @@
 package kata_london_style.infrastructure.entry;
 
-import kata_london_style.model.ports.primary.ContentProcessCommand;
+import kata_london_style.domain.ports.primary.ContentProcessCommand;
+import kata_london_style.infrastructure.repository.UserEntity;
+import kata_london_style.infrastructure.repository.UserEntityAdapter;
 
 public class UserRegistrationCommand implements ContentProcessCommand
 {
+  private UserEntityAdapter userEntityRepository;
+
+  public UserRegistrationCommand(UserEntityAdapter userEntityRepository)
+  {
+    this.userEntityRepository = userEntityRepository;
+  }
+
   @Override
   public String execute(String name)
   {
+    UserEntity userEntity = new UserEntity(name);
+    userEntityRepository.addUser(userEntity);
     return "OK";
   }
 }

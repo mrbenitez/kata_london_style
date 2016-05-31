@@ -1,4 +1,4 @@
-package kata_london_style.model.ports.primary;
+package kata_london_style.domain.ports.primary;
 
 public interface ContentProcessCommand
 {
