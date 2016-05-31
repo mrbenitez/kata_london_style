@@ -2,15 +2,24 @@ package kata_london_style;
 
 public final class Main
 {
-  private ICommandExecutor commandExecutor;
+  private CommandExecutor commandExecutor;
+  private CommandInterpreter commandInterpreter;
 
-  public void setCommandExecutor(ICommandExecutor commandExecutor)
+  public void execute(String[] args)
+  {
+    if (commandInterpreter.valid(args[0]))
+    {
+      commandExecutor.execute(args[0], args[1]);
+    }
+  }
+
+  public void setCommandExecutor(CommandExecutor commandExecutor)
   {
     this.commandExecutor = commandExecutor;
   }
 
-  public void execute(String[] args)
+  public void setCommandInterpreter(CommandInterpreter commandInterpreter)
   {
-    commandExecutor.execute(args[0], args[1]);
+    this.commandInterpreter = commandInterpreter;
   }
 }
