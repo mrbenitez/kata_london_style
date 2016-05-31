@@ -1,4 +1,4 @@
-package kata_london_style;
+package kata_london_style.infrastructure.entry;
 
 import java.util.HashMap;
 import java.util.Map;

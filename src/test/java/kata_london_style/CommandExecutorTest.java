@@ -6,6 +6,10 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+import kata_london_style.infrastructure.entry.CommandExecutor;
+import kata_london_style.infrastructure.entry.UserRegistrationCommand;
+import kata_london_style.model.ports.primary.ContentProcessCommand;
+
 public class CommandExecutorTest
 {
   private static final String USER = "mramos";
@@ -19,7 +23,7 @@ public class CommandExecutorTest
   {
     context = new Mockery();
     context.setImposteriser(ClassImposteriser.INSTANCE);
-    userRegistration = context.mock(UserRegistration.class);
+    userRegistration = context.mock(UserRegistrationCommand.class);
   }
 
   @Test

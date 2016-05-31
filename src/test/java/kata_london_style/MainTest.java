@@ -6,6 +6,10 @@ import org.jmock.lib.legacy.ClassImposteriser;
 import org.junit.Before;
 import org.junit.Test;
 
+import kata_london_style.infrastructure.entry.CommandExecutor;
+import kata_london_style.infrastructure.entry.CommandInterpreter;
+import kata_london_style.infrastructure.entry.Main;
+
 public class MainTest
 {
   private static final String INVALID_COMMAND = "393kd9";

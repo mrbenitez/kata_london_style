@@ -1,4 +1,6 @@
-package kata_london_style;
+package kata_london_style.infrastructure.entry;
+
+import kata_london_style.model.ports.primary.ContentProcessCommand;
 
 public class CommandExecutor
 {
